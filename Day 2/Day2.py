@@ -46,6 +46,8 @@ def test():
     assert has_pattern(111111, lambda r: r >= 2)
     assert has_pattern(111111, lambda r: r == 2)  # via "111" * 2
     assert not has_pattern(12345, lambda r: r >= 2)
+    assert has_pattern(12121212, lambda r: r == 4)
+    assert has_pattern(12121212, lambda r: r == 2)
 
 if __name__ == "__main__":
     test()
