@@ -36,6 +36,7 @@ def sum_invalid_ids(data: str, is_invalid) -> int:
 
     return sum(invalid_numbers())
 
+# Check if the given number from the input has a repeating pattern according to the given predicate (e.g., exactly 2 repetitions for part 1, or 2 or more for part 2)
 def has_pattern(num: int, predicate) -> bool:
     s = str(num)
     n = len(s)
