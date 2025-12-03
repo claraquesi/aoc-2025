@@ -39,7 +39,6 @@ def find_joltage(line: str, j_len: int) -> int:
         # for each battery left to select, find the largest battery in the remaining range of the line.
         # This range shrinks as we select more batteries, since we need to leave enough batteries at the end to fill the remaining slots.
         # The next battery is chosen from the range (loc + 1) to (L + 1 - j_len + i) of the pack, where loc is the position of the last found battery.
-        # This is to ensure we have enough batteries left to select the remaining ones. 
         joltage[i], loc = find_largest_in_range(line, loc, L + 1 - j_len + i)
 
     return int("".join(joltage)) # concatenate selected batteries and convert to int
