@@ -60,7 +60,7 @@ def test():
     assert find_joltage("9876543210", 2) == 98
     assert find_joltage("818181911112111", 2) == 92
     assert find_joltage("234234234234278", 2) == 78
-    assert not find_joltage("811111111111119", 2) == 98
+    assert find_joltage("811111111111119", 2) == 89
     assert find_joltage("987654321111111", 12) == 987654321111
     assert find_joltage("811111111111119", 12) == 811111111119
     assert find_joltage("234234234234278", 12) == 434234234278
