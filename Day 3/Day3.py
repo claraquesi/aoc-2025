@@ -32,24 +32,25 @@ def sum_joltages(data: str, j_len: int) -> int:
 
 # Find the largest joltage by selecting j_len batteries from the given pack line
 def find_joltage(pack: str, j_len: int) -> int:
-    joltage = [0 for _ in range(j_len)] # initialize list to hold selected batteries as strings (for easier concatenation later)
+    joltage = [] # list of chosen battery digits for the joltage
     loc = 0 # initialize starting location for search
     L = len(pack) # length of the battery pack line
     for i in range(j_len):
         # for each battery left to select, find the largest battery in the remaining range of the line.
         # This range shrinks as we select more batteries, since we need to leave enough batteries at the end to fill the remaining slots.
         # The next battery is chosen from the range (loc + 1) to (L + 1 - j_len + i) of the pack, where loc is the position of the last found battery, and i is the index of the current battery being selected.
-        joltage[i], loc = find_largest_in_range(pack, loc, L + 1 - j_len + i)
+        digit, loc = find_largest_in_range(pack, loc, L + 1 - j_len + i)
+        joltage.append(digit) # add found battery to the joltage list
 
     return int("".join(joltage)) # concatenate selected batteries and convert to int
 
 # For each given search range, find the largest battery and return it along with its position which will be the starting location in the next search
-def find_largest_in_range(pack: str, start: int, end: int) -> int:
+def find_largest_in_range(pack: str, start: int, end: int) -> tuple[str, int]:
     largest = "0" # initialize largest found battery
     delta = 0 # this will track the offset from start to the position of the found largest battery to be used in the next search
     # search for the largest battery in the specified range of the pack line
     for idx, x in enumerate(pack[start:end]):
-        if int(x) > int(largest):
+        if x > largest:
             largest = x # update largest found battery
             delta = idx # delta from start to the position of the found largest battery
     return largest, start + delta + 1 # search started at 'start', so we need to offset start by delta + 1 for the starting location of the next search.
