@@ -45,13 +45,13 @@ def find_joltage(line: str, j_len: int) -> int:
 
 # For each given search range, find the largest battery and return it along with its position for the next search
 def find_largest_in_range(line: str, start: int, end: int) -> int:
-    largest = "0"
-    delta = 0
+    largest = "0" # initialize largest found battery
+    delta = 0 # this will track the offset from start to the position of the found largest battery to be used in the next search
     # search for the largest battery in the specified range of the pack line
     for idx, x in enumerate(line[start:end]):
         if int(x) > int(largest):
-            largest = x
-            delta = idx
+            largest = x # update largest found battery
+            delta = idx # delta from start to the position of the found largest battery
     return largest, start + delta + 1 # search started at 'start', so we need to offset start by delta + 1 for the starting location of the next search.
 
 def test():
