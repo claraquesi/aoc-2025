@@ -43,6 +43,7 @@ def find_joltage(line: str, j_len: int) -> int:
 
     return int("".join(joltage)) # concatenate selected batteries and convert to int
 
+# For each given search range, find the largest battery and return it along with its position for the next search
 def find_largest_in_range(line: str, start: int, end: int) -> int:
     largest = "0"
     delta = 0
