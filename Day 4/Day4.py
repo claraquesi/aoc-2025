@@ -15,8 +15,7 @@ def main():
 
 def solve_part1(data: str) -> int:
     rows = data.splitlines() # parse data into a list of rows
-    roll_sum = sum_accessible_rolls(rows) # get the sum of all accessible rows in the input data
-    return roll_sum #return our answer
+    return sum_accessible_rolls(rows) # return the sum of all accessible rows in the input data
 
 def solve_part2(data: str) -> int:
     total = 0 # initialize counter for total rolls removed in all trials
