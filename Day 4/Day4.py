@@ -46,9 +46,6 @@ def num_neighboring_rolls(rows: list[str], x: int, y: int) -> int:
     width = len(rows[0])
     count = 0 # initialize counter for number of neighbors that are rolls (either unmarked, @, or marked, X)
 
-    """
-    Sum up all neighbors relative to position (x,y) that are rolls (either marked or unmarked)
-    """
     return sum(
         1
         for dy in (-1, 0, 1)
@@ -56,7 +53,7 @@ def num_neighboring_rolls(rows: list[str], x: int, y: int) -> int:
         if not (dx == 0 and dy ==0)
         and 0 <= y + dy < height
         and 0 <= x + dx < width
-        and rows[y + dy][x + dx] in "@X"
+        and rows[y + dy][x + dx] in "@X" # Sum up all neighbors relative to position (x,y) that are rolls (either marked or unmarked)
     )
 
 
