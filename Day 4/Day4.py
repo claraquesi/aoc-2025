@@ -14,38 +14,41 @@ def main():
 
 
 def solve_part1(data: str) -> int:
-    rows = data.splitlines()
-    roll_sum = sum_accessible_rolls(rows)
-    return roll_sum
+    rows = data.splitlines() # parse data into a list of rows
+    roll_sum = sum_accessible_rolls(rows) # get the sum of all accessible rows in the input data
+    return roll_sum #return our answer
 
 def solve_part2(data: str) -> int:
-    total = 0
-    rows = data.splitlines()
-    while True:
-        roll_sum = sum_accessible_rolls(rows)
-        if roll_sum == 0:
-            break
-        total += roll_sum
-        rows = [row.replace("X",".") for row in rows]
+    total = 0 # initialize counter for total rolls removed in all trials
+    rows = data.splitlines() # parse data into list of rows
+    while True: # keep looping until no more rolls are accessible
+        roll_sum = sum_accessible_rolls(rows) # for each trial, find how many rolls are accessible given the current state of the input data
+        if roll_sum == 0: 
+            break # finish when no more rolls are accessible
+        total += roll_sum # count up total number of rolls removed over all trials
+        rows = [row.replace("X",".") for row in rows] # remove rolls from our list that were already picked
     return total
 
 def sum_accessible_rolls(rows: list[str]) -> tuple[int, list[str]]:
-    count = 0
-    for idy, row in enumerate(rows):
-        for idx, ch in enumerate(row):
-            if ch in "@X" and num_neighboring_rolls(rows, idx, idy) < 4:
-                count += 1
-                left_of_me = rows[idy][:idx]
-                right_of_me = rows[idy][idx+1:]
-                rows[idy] = left_of_me + "X" + right_of_me
+    count = 0 # initialize counter for number of accessible rows in the current state of the input data
+    for idy, row in enumerate(rows): # loop through each row
+        for idx, ch in enumerate(row): # loop through each entry in each row
+            if ch in "@" and num_neighboring_rolls(rows, idx, idy) < 4: # if the current entry is a roll, if it has fewer than 4 roll neighbors, it is accessible
+                count += 1 # keep count of accessible rolls
+                left_of_me = rows[idy][:idx] # the row to the left of the current entry
+                right_of_me = rows[idy][idx+1:] # the row to the right of the current entry
+                rows[idy] = left_of_me + "X" + right_of_me # mark entry for removal in next trial. It will remain marked for now since it can still prevent other rolls from being accessible.
 
     return count
 
 def num_neighboring_rolls(rows: list[str], x: int, y: int) -> int:
     height = len(rows)
     width = len(rows[0])
-    count = 0
+    count = 0 # initialize counter for number of neighbors that are rolls (either unmarked, @, or marked, X)
 
+    """
+    Sum up all neighbors relative to position (x,y) that are rolls (either marked or unmarked)
+    """
     return sum(
         1
         for dy in (-1, 0, 1)
