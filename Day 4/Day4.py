@@ -15,58 +15,46 @@ def main():
 
 def solve_part1(data: str) -> int:
     rows = data.splitlines()
-    roll_sum,rows = sum_accessible_rolls(rows)
+    roll_sum = sum_accessible_rolls(rows)
     return roll_sum
 
 def solve_part2(data: str) -> int:
     total = 0
     rows = data.splitlines()
     while True:
-        roll_sum,rows = sum_accessible_rolls(rows)
+        roll_sum = sum_accessible_rolls(rows)
         if roll_sum == 0:
             break
         total += roll_sum
-        for i in range(len(rows)):
-            rows[i] = rows[i].replace("X",".")
-
+        rows = [row.replace("X",".") for row in rows]
     return total
 
-def sum_accessible_rolls(rows: str) -> tuple[int, str]:
+def sum_accessible_rolls(rows: list[str]) -> tuple[int, list[str]]:
+    count = 0
+    for idy, row in enumerate(rows):
+        for idx, ch in enumerate(row):
+            if ch in "@X" and num_neighboring_rolls(rows, idx, idy) < 4:
+                count += 1
+                left_of_me = rows[idy][:idx]
+                right_of_me = rows[idy][idx+1:]
+                rows[idy] = left_of_me + "X" + right_of_me
 
-    def accessible_rolls():
-        for idy, y in enumerate(rows):
-            for idx, x in enumerate(rows[idy]):
-                if (x == "@" or x == "X") and num_neighboring_rolls(rows, idx, idy) < 4:
-                    yield 1
-                    left_of_me = rows[idy][:idx]
-                    right_of_me = rows[idy][idx+1:]
-                    rows[idy] = left_of_me + "X" + right_of_me
-                else:
-                    yield 0
+    return count
 
-    return sum(accessible_rolls()), rows
+def num_neighboring_rolls(rows: list[str], x: int, y: int) -> int:
+    height = len(rows)
+    width = len(rows[0])
+    count = 0
 
-def num_neighboring_rolls(s: str, x: int, y: int) -> int:
-    neighbors = find_all_neighbors(s, x, y)
-    def count_neighboring_rolls():
-        for neighbor in enumerate(neighbors):
-            if neighbor[1] == "@" or neighbor[1] == "X":
-                yield 1
-    return sum(count_neighboring_rolls())
-
-def find_all_neighbors(s: str, x: int, y: int) -> str:
-    neighbors = ""
-    row_len = len(s[y])
-    num_rows = len(s)
-    if (x > 0): neighbors = neighbors + s[y][x-1]
-    if (x < row_len - 1): neighbors = neighbors + s[y][x+1]
-    if (x > 0 and y > 0): neighbors = neighbors + s[y-1][x-1]
-    if (y > 0): neighbors = neighbors + s[y-1][x]
-    if (y > 0) and (x < row_len - 1): neighbors = neighbors + s[y-1][x+1]
-    if (y < num_rows - 1) and (x > 0): neighbors = neighbors + s[y+1][x-1]
-    if (y < num_rows - 1): neighbors = neighbors + s[y+1][x]
-    if (y < num_rows - 1) and (x < row_len - 1): neighbors = neighbors + s[y+1][x+1]
-    return neighbors
+    return sum(
+        1
+        for dy in (-1, 0, 1)
+        for dx in (-1, 0, 1)
+        if not (dx == 0 and dy ==0)
+        and 0 <= y + dy < height
+        and 0 <= x + dx < width
+        and rows[y + dy][x + dx] in "@X"
+    )
 
 
 if __name__ == "__main__":
