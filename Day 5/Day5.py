@@ -41,7 +41,7 @@ def remove_overlap(i_ranges: list[str]) -> list[str]:
     return list(filter(None,i_ranges))
 
 def ranges_overlap(l: int, h: int, lc: int, hc: int) -> bool:    
-    return max(l, lc) < min(h, hc)
+    return max(l, lc) <= min(h, hc)
 
 def main():
     """Main function for Advent of Code 2025 Day 4"""
